@@ -6,25 +6,55 @@ import java.awt.event.ActionListener;
 
 public class PanelClienteServidor extends Panel{
   private static final long serialVersionUID=1;
-  private Button botonCliente,botonServidor;
+  private Button botonClienteRala,botonServidorRala, botonClienteNombres, botonClienteBuzones, botonServidorNombres, botonServidorBuzones;
 
   public PanelClienteServidor(){
-     botonCliente=new Button("Cliente");
-     botonServidor=new Button("Servidor");
-     add(botonCliente);
-     add(botonServidor);
+     setLayout(new GridLayout(3,2));
+     botonClienteRala=new Button("Cliente Rala");
+     botonServidorRala=new Button("Servidor Rala");
+     botonClienteNombres=new Button("Cliente Nombres");
+     botonServidorNombres=new Button("Servidor Nombres");
+     botonClienteBuzones=new Button("Cliente Buzones");
+     botonServidorBuzones=new Button("Servidor Buzones");
+     
+     add(botonClienteRala);
+     add(botonServidorRala);
+     add(botonClienteNombres);
+     add(botonServidorNombres);
+     add(botonClienteBuzones);
+     add(botonServidorBuzones);
   }
   
-  public Button dameBotonCliente(){
-    return botonCliente;
+  public Button dameBotonClienteRala(){
+    return botonClienteRala;
   }
   
-  public Button dameBotonServidor(){
-    return botonServidor;
+  public Button dameBotonClienteNombres(){
+    return botonClienteNombres;
+  }
+  
+  public Button dameBotonClienteBuzones(){
+    return botonClienteBuzones;
+  }
+  
+  public Button dameBotonServidorRala(){
+    return botonServidorRala;
+  }
+  
+  public Button dameBotonServidorBuzones(){
+    return botonServidorBuzones;
+  }
+  
+  public Button dameBotonServidorNombres(){
+    return botonServidorNombres;
   }
   
   public void agregarActionListener(ActionListener al){
-    botonCliente.addActionListener(al);
-    botonServidor.addActionListener(al);
+    botonClienteRala.addActionListener(al);
+    botonServidorRala.addActionListener(al);
+    botonClienteNombres.addActionListener(al);
+    botonServidorNombres.addActionListener(al);
+    botonClienteBuzones.addActionListener(al);
+    botonServidorBuzones.addActionListener(al);
   }
 }
