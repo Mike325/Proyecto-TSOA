@@ -16,6 +16,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.nio.ByteBuffer;
 import sistema.clienteServidor.modoMonitor.DatosServidor;
 import sistemaDistribuido.sistema.clienteServidor.modoMonitor.MicroNucleoBase;
 import sistemaDistribuido.sistema.clienteServidor.modoUsuario.Proceso;
@@ -47,6 +48,82 @@ public final class MicroNucleo extends MicroNucleoBase{
 	public final static MicroNucleo obtenerMicroNucleo(){
 		return nucleo;
 	}
+    
+    // ************************************ BUZONES ***********************************
+    private static Hashtable<Integer, LinkedList<byte[]>> buzones = new Hashtable<Integer, LinkedList<byte[]>>();
+
+    public static class PairIDAndIP implements ParMaquinaProceso
+    {
+        int id;
+        String ip;
+    
+        public PairIDAndIP(int id, String ip) 
+        { 
+            this.id = id;
+            this.ip = ip;
+        }
+
+        public String dameIP() { return this.ip; }
+        public int dameID() { return this.id; }
+    }
+    protected void registrarBuzon(int id)
+    {
+        buzones.put(id, new LinkedList<byte[]>());
+    }
+
+    protected byte[] revisaBuzon(int id, byte[] solServidor) 
+    {
+        byte[] paquete = null;
+
+        if(buzones.get(id).size() > 0)
+        {
+            //System.out.println("Entra a solicitud de buzon");
+            paquete = buzones.get(id).poll();
+            System.arraycopy(paquete, 0, solServidor, 0, paquete.length);
+        }
+
+
+        return paquete;
+    }
+
+    private void envioError(String mensaje_error, String ip, byte[] bytes_origen, byte[] bytes_destino) 
+    {
+            DatagramPacket paquete;
+            DatagramSocket socket_emisor = dameSocketEmision();
+
+            byte[] buffer   = new byte[1024];
+            paquete         = new DatagramPacket(buffer, buffer.length);
+
+            System.arraycopy(bytes_destino, 0, buffer, 0, 4);
+            System.arraycopy(bytes_origen, 0, buffer, 4, 4);
+
+            //String au = "direccion desconocida";  
+            buffer[8] = (byte)mensaje_error.getBytes().length;
+            
+            System.arraycopy(mensaje_error.getBytes(), 0, buffer, 9, mensaje_error.getBytes().length);
+
+            try 
+            {
+                //imprimeln("Proceso destinatario no encontrado según campo dest del mensaje recibido");
+                DatagramPacket error = new DatagramPacket(  buffer, 
+                                                            buffer.length, 
+                                                            InetAddress.getByName( ip ), 
+                                                            damePuertoRecepcion()
+                                                         );
+                
+                int id_destino = ByteBuffer.wrap(bytes_origen).getInt();
+                
+                //System.out.println("Enviando error a " + ip + " con id " + id_destino);
+
+                socket_emisor.send(error);
+            } 
+            catch (IOException ex) 
+            {
+                //System.out.println("Error de entra y salida al enviar mensaje de error " + mensaje_error);
+                imprimeln("Error de entra y salida al enviar mensaje de error " + mensaje_error);
+            }
+    }
+    // ************************************ FIN BUZONES ***********************************
 
 	/*---Metodos para probar el paso de mensajes entre los procesos cliente y servidor en ausencia de datagramas.
     Esta es una forma incorrecta de programacion "por uso de variables globales" (en este caso atributos de clase)

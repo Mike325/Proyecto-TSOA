@@ -73,4 +73,19 @@ public class Nucleo{
 	public static void iniciarSistema(Escribano wri, int puertoEntrada, int outputPort) {
 		nucleo.iniciarSistema(wri, puertoEntrada);
 	}
+
+	public static void registrar(ParMaquinaProceso asa) 
+	{
+	   //nucleo.registrar(asa); 
+	}
+
+	public static void registrarBuzon(int id)
+	{
+	    nucleo.registrarBuzon(id);
+	}
+	
+	public static byte[] revisaBuzon(int id, byte[] solServidor) 
+	{
+	   return nucleo.revisaBuzon(id, solServidor); 
+	}
 }
