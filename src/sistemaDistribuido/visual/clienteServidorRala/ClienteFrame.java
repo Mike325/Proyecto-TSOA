@@ -4,10 +4,10 @@
  * Fecha Modificacion: 02/03/2016
  */
 
-package sistemaDistribuido.visual.clienteServidor;
+package sistemaDistribuido.visual.clienteServidorRala;
 
 import sistemaDistribuido.sistema.clienteServidor.modoMonitor.Nucleo;
-import sistemaDistribuido.sistema.clienteServidor.modoUsuario.ProcesoCliente;
+import sistemaDistribuido.sistema.clienteServidor.modoUsuarioRala.ProcesoCliente;
 import sistemaDistribuido.visual.clienteServidor.MicroNucleoFrame;
 import sistemaDistribuido.visual.clienteServidor.ProcesoFrame;
 import java.awt.Label;

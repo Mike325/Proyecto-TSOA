@@ -6,8 +6,8 @@ import sistemaDistribuido.util.Escribano;
 import sistemaDistribuido.util.Pausador;
 import sistemaDistribuido.visual.clienteServidor.PanelClienteServidor;
 import sistemaDistribuido.visual.clienteServidor.ProcesoFrame;
-import sistemaDistribuido.visual.clienteServidor.ClienteFrame;
-import sistemaDistribuido.visual.clienteServidor.ServidorFrame;
+import sistemaDistribuido.visual.clienteServidorRala.ClienteFrame;
+import sistemaDistribuido.visual.clienteServidorRala.ServidorFrame;
 import sistemaDistribuido.visual.util.PanelInformador;
 import sistemaDistribuido.visual.util.PanelIPID;
 import microKernelBasedSystem.util.WriterManager;
@@ -95,12 +95,25 @@ public class MicroNucleoFrame extends Frame implements WindowListener,Escribano,
 		public void actionPerformed(ActionEvent e){
 			String com=e.getActionCommand();
 
-			if (com.equals("Cliente")){
-				levantarProcesoFrame(new ClienteFrame(MicroNucleoFrame.this));
+			if (com.equals("Cliente Rala")){
+				levantarProcesoFrame(new sistemaDistribuido.visual.clienteServidorRala.ClienteFrame(MicroNucleoFrame.this));
 			}
-			else if (com.equals("Servidor")){
-				levantarProcesoFrame(new ServidorFrame(MicroNucleoFrame.this));
+			else if (com.equals("Servidor Rala")){
+				levantarProcesoFrame(new sistemaDistribuido.visual.clienteServidorRala.ServidorFrame(MicroNucleoFrame.this));
 			}
+			else if (com.equals("Cliente Nombres")){
+				//levantarProcesoFrame(new ServidorFrame(MicroNucleoFrame.this));
+			}
+			else if (com.equals("Servidor Nombres")){
+				//levantarProcesoFrame(new ServidorFrame(MicroNucleoFrame.this));
+			}
+			else if (com.equals("Cliente Buzones")){
+				//levantarProcesoFrame(new ServidorFrame(MicroNucleoFrame.this));
+			}
+			else if (com.equals("Servidor Buzones")){
+				//levantarProcesoFrame(new ServidorFrame(MicroNucleoFrame.this));
+			}
+                        
 		}
 	}
 

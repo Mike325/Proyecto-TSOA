@@ -5,7 +5,7 @@
  * Fecha PRactica 05: 09/05/2016
  */
 
-package sistemaDistribuido.sistema.clienteServidor.modoUsuario;
+package sistemaDistribuido.sistema.clienteServidor.modoUsuarioRala;
 
 import sistemaDistribuido.sistema.clienteServidor.modoMonitor.Nucleo;
 import sistemaDistribuido.sistema.clienteServidor.modoUsuario.Proceso;

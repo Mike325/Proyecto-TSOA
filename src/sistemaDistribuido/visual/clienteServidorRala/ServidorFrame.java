@@ -1,6 +1,6 @@
-package sistemaDistribuido.visual.clienteServidor;
+package sistemaDistribuido.visual.clienteServidorRala;
 
-import sistemaDistribuido.sistema.clienteServidor.modoUsuario.ProcesoServidor;
+import sistemaDistribuido.sistema.clienteServidor.modoUsuarioRala.ProcesoServidor;
 import sistemaDistribuido.visual.clienteServidor.MicroNucleoFrame;
 import sistemaDistribuido.visual.clienteServidor.ProcesoFrame;
 

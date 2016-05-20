@@ -2,6 +2,7 @@ package sistemaDistribuido.visual.clienteServidor;
 
 import java.awt.Panel;
 import java.awt.Button;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 public class PanelClienteServidor extends Panel{

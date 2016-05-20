@@ -14,8 +14,9 @@
  */
 
 
-package sistemaDistribuido.sistema.clienteServidor.modoUsuario;
+package sistemaDistribuido.sistema.clienteServidor.modoUsuarioRala;
 
+import sistemaDistribuido.sistema.clienteServidor.modoUsuario.Proceso;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -35,7 +36,7 @@ import sistemaDistribuido.util.Pausador;
 /**
  * 
  */
-public class ProcesoServidor extends Proceso{
+public class ProcesoServidor extends Proceso {
 
         
         
