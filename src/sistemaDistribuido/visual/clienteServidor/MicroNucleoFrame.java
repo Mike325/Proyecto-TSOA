@@ -101,17 +101,17 @@ public class MicroNucleoFrame extends Frame implements WindowListener,Escribano,
 			else if (com.equals("Servidor Rala")){
 				levantarProcesoFrame(new sistemaDistribuido.visual.clienteServidorRala.ServidorFrame(MicroNucleoFrame.this));
 			}
+			else if (com.equals("Cliente Buzones")){
+				levantarProcesoFrame(new sistemaDistribuido.visual.clienteServidorBuzones.ClienteFrame(MicroNucleoFrame.this));
+			}
+			else if (com.equals("Servidor Buzones")){
+				levantarProcesoFrame(new sistemaDistribuido.visual.clienteServidorBuzones.ServidorFrame(MicroNucleoFrame.this));
+			}
 			else if (com.equals("Cliente Nombres")){
 				//levantarProcesoFrame(new ServidorFrame(MicroNucleoFrame.this));
 			}
 			else if (com.equals("Servidor Nombres")){
 				//levantarProcesoFrame(new ServidorFrame(MicroNucleoFrame.this));
-			}
-			else if (com.equals("Cliente Buzones")){
-				//levantarProcesoFrame(new sistemaDistribuido.visual.clienteServidorBuzones.ClienteFrame(MicroNucleoFrame.this));
-			}
-			else if (com.equals("Servidor Buzones")){
-				//levantarProcesoFrame(new sistemaDistribuido.visual.clienteServidorBuzones.ServidorFrame(MicroNucleoFrame.this));
 			}
                         
 		}

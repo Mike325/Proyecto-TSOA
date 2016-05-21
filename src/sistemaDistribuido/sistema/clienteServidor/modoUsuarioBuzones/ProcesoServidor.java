@@ -10,16 +10,20 @@ package sistemaDistribuido.sistema.clienteServidor.modoUsuarioBuzones;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import sistemaDistribuido.sistema.clienteServidor.modoMonitor.Nucleo;
+import sistemaDistribuido.sistema.clienteServidor.modoMonitor.MicroNucleo;
 import sistemaDistribuido.sistema.clienteServidor.modoUsuario.Proceso;
 import sistemaDistribuido.util.Escribano;
 import sistemaDistribuido.util.Pausador;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sistema.clienteServidor.modoMonitor.DatosServidor;
 
 
 /**
@@ -198,6 +202,29 @@ public class ProcesoServidor extends Proceso
         byte dato;
 
         Nucleo.registrarBuzon(dameID());
+
+        //Practica 5 Rala
+        DatosServidor objServer= new DatosServidor();
+        objServer.setDestino(248);
+        objServer.setId(nucleo.dameIdProceso()); 
+        try 
+        {
+            objServer.setIp(InetAddress.getLocalHost().getHostAddress()); //creo que este es para la ip
+        } 
+        catch (UnknownHostException ex) 
+        {
+            //Logger.getLogger(ProcesoServidor.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error de host desconocido");
+        }
+        boolean agregado = MicroNucleo.procLocales.add(objServer); //agrega el servidor a la tabla de procesos locales
+        if(agregado==true)
+            imprimeln("Servidor agregado a la tabla correctamente");
+        else
+            imprimeln("No se pudo agregar el servidor");
+        //para comprobar si se guardan y eliminan correctamente
+        
+        MicroNucleo.numSer++;
+        //Practica 5 Rala
         
         while(continuar())
         {
@@ -229,6 +256,7 @@ public class ProcesoServidor extends Proceso
             Nucleo.send( id_origen, respServidor );
             Pausador.pausa(5000);
         }
+
         imprimeln("Finalizando Proceso del servidor");
     }
 }

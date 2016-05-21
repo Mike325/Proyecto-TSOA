@@ -22,6 +22,7 @@ public class ProcesoCliente extends Proceso
 {
     public byte contador, codigo_operacion;
     public int id_origen, id_destino;
+    private int big = 0;
     public String archivo_trabajo, datos_respuesta, codigo_error;
 
     public static class Reintentar extends Thread
@@ -84,7 +85,7 @@ public class ProcesoCliente extends Proceso
     *  La funcion separarRespuesta divide los datos
     *  de la solicitud del cliente
     */
-    public void desempaquetarRespuesta(byte[] respCliente) 
+    public void desempaquetarRespuesta(byte[] respCliente, int endian) 
     {
         byte[]  origen  = new byte[4], 
                 destino = new byte[4];
@@ -92,14 +93,26 @@ public class ProcesoCliente extends Proceso
         System.arraycopy(respCliente, 0, origen, 0, 4);
         System.arraycopy(respCliente, 4, destino, 0, 4);
         
-        id_origen  = ByteBuffer.wrap(origen).getInt();
-        id_destino = ByteBuffer.wrap(destino).getInt();
+        if (endian == big) 
+        {
+            id_origen  = ByteBuffer.wrap(origen).getInt();
+            id_destino = ByteBuffer.wrap(destino).getInt();
+        }
+        else
+        {
+            id_origen  = ByteBuffer.wrap(origen).order(ByteOrder.LITTLE_ENDIAN).getInt();
+            id_destino = ByteBuffer.wrap(destino).order(ByteOrder.LITTLE_ENDIAN).getInt();
+        }
         
         short longitud = respCliente[8];
         datos_respuesta = new String(respCliente, 9, longitud);
+        System.out.println("Respuesta " + datos_respuesta);
         
-        codigo_error = datos_respuesta.substring(0, 2);
-        //System.out.println("codigo de error " + codigo_error);
+        if (datos_respuesta.length() > 2)
+        {
+            codigo_error = datos_respuesta.substring(0, 2);
+            System.out.println("codigo de error " + codigo_error);
+        }
     }
     
     @Override
@@ -129,10 +142,9 @@ public class ProcesoCliente extends Proceso
                 Nucleo.receive(dameID(),respCliente);
                 imprimeln("Procesando respuesta del servidor");
 
-                desempaquetarRespuesta(respCliente);
+                desempaquetarRespuesta(respCliente, 1);
 
                 imprimeln("Resultado enviado: " + datos_respuesta);
-                //Nucleo.suspenderProceso();
                 Pausador.pausa(5000);
             }while(codigo_error.equals("-1"));
         }

@@ -79,6 +79,7 @@ public class Nucleo{
 	   //nucleo.registrar(asa); 
 	}
 
+    // ************************************ BUZONES ***********************************
 	public static void registrarBuzon(int id)
 	{
 	    nucleo.registrarBuzon(id);
@@ -88,4 +89,5 @@ public class Nucleo{
 	{
 	   return nucleo.revisaBuzon(id, solServidor); 
 	}
+    // ********************************* Fin BUZONES ***********************************
 }

@@ -1,3 +1,5 @@
 *.sw
 *.swp
+*.txt
 /build/
+/dist/
