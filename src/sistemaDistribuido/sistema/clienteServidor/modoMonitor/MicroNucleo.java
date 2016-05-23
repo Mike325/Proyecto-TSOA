@@ -12,14 +12,11 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.nio.ByteBuffer;
-import sistema.clienteServidor.modoMonitor.DatosServidor;
-import sistemaDistribuido.sistema.clienteServidor.modoMonitor.MicroNucleoBase;
-import sistemaDistribuido.sistema.clienteServidor.modoUsuario.Proceso;
 
 
 public final class MicroNucleo extends MicroNucleoBase{
@@ -27,6 +24,12 @@ public final class MicroNucleo extends MicroNucleoBase{
     Hashtable<Integer, Par> htEmision = new Hashtable<Integer, Par>();
     Hashtable<Integer, byte[]> htRecepcion = new Hashtable<Integer, byte[]>();
     private DatagramSocket socketRecepcion;
+    
+    //servidor de nombre
+	private static MicroNucleo nucleo=new MicroNucleo();
+	Hashtable<Integer, ParMaquinaProceso> tabla_emision=new Hashtable<Integer,ParMaquinaProceso>();
+	Hashtable<Integer,byte[]> tabla_recepcion= new Hashtable<Integer,byte[]>();
+	private Servidor_De_Nombre SN;
 
     public static LinkedList<DatosServidor> procLocales = new LinkedList<DatosServidor>();
     public static LinkedList<DatosServidor> procRemotos = new LinkedList<DatosServidor>();
@@ -39,9 +42,34 @@ public final class MicroNucleo extends MicroNucleoBase{
     /**
     * 
     */
-    private MicroNucleo(){
-    }
+	private MicroNucleo(){
+		tabla_emision= new Hashtable<Integer,ParMaquinaProceso>();
+		tabla_recepcion= new Hashtable<Integer,byte[]>();
+		SN= new Servidor_De_Nombre();
+	}
 
+    //servidor de nombre
+    public class atributos_IP_ID implements ParMaquinaProceso {
+        private String ip="";
+        private int id;
+        atributos_IP_ID(String ip,int id){
+
+            this.ip=ip;
+            this.id=id;
+
+        }
+		@Override
+		public String dameIP() {
+			// TODO Auto-generated method stub
+			return ip;
+		}
+		@Override
+		public int dameID() {
+			// TODO Auto-generated method stub
+			return id;
+		}
+
+    }
     /**
     * 
     */
@@ -155,11 +183,18 @@ public final class MicroNucleo extends MicroNucleoBase{
         int codop=message[8];
         int origen=nucleo.dameIdProceso();
         String nombreArchivo= new String(message, 10, message[9]);
-
+        
+        //servidor de nombres
+    	ParMaquinaProceso asa=null;
+		asa= SN.buscar_servidor(dest);
+		DatagramPacket dp;
+		DatagramSocket socket_emision=dameSocketEmision();
+		
         empaquetarEntero(message, 0, origen);
         imprimeln("El proceso que lo solicita es "+origen);
-        if(htEmision.containsKey(dest))
-        {
+        if(asa==null){//servidor de nombrees
+        	if(htEmision.containsKey(dest))
+        	{
             //System.out.println("entra en la tabla");
             parDatos=htEmision.get(dest);
             ip=parDatos.getIp();
@@ -167,6 +202,7 @@ public final class MicroNucleo extends MicroNucleoBase{
             //System.out.println("id e ip del mensaje a enviar"+ ip +"   : "+id);
             sendMensaje(id, ip, message);
         }
+        }//f servidor de nombres
         else
         {
             LSA enviarLsa= new LSA(dest, message, codop, nombreArchivo);
@@ -667,8 +703,22 @@ public final class MicroNucleo extends MicroNucleoBase{
         resultado=(short) (resultado&blanqueador);
         return resultado;
     }
-        
+ 
+    //servidor de nombres
+	public int registrar_servidor(String nombre_servidor, ParMaquinaProceso asa) {
+		return SN.registrar_servidor(nombre_servidor, asa);
+	}
+
+	public boolean deregistrar_servidor(int id) {
+		return SN.deregistrar_servidor(id);	
+	}
+
+	public ParMaquinaProceso buscar_servidor(String nombre_servidor){
+		return SN.buscar_servidor(nombre_servidor);		
+	}
 }
+
+
 
 
 /* Lo siguiente es reemplazable en la practica #2,
