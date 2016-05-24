@@ -52,7 +52,7 @@ public class ProcesoServidor extends Proceso {
 		imprimeln("Proceso servidor en ejecucion.");
                 imprimeln("Invocando a receive()");
                 byte[] solServidor=new byte[1024];
-		byte[] respServidor;
+		byte[] respServidor, buzon;
                 String respuesta;
                 int cod;
                 String archivo;  //nombre del archivo
@@ -87,8 +87,20 @@ public class ProcesoServidor extends Proceso {
                    System.out.println(idProGuardado);
                 }
                   */         
+                Nucleo.registrarBuzon(dameID());
+                
 		while(continuar()){                       
-			Nucleo.receive(dameID(),solServidor);
+			buzon = Nucleo.revisaBuzon(dameID(), solServidor);
+                        if (buzon != null) 
+                        {
+                            imprimeln("Atendiendo solicitud del buzon");
+                            System.arraycopy(buzon, 0, solServidor, 0, buzon.length);
+                        }
+                        else
+                        {
+                            imprimeln("Invocando a recive");
+                            Nucleo.receive(dameID(),solServidor);
+                        }
                         
 
                         imprimeln("Señalamiento al nucleo para envio de mensaje");
@@ -160,6 +172,7 @@ public class ProcesoServidor extends Proceso {
                         {
                                 
                         }
+                        Pausador.pausa(5000);
 		}
                 MicroNucleo.procLocales.remove(objServer); //elimina el servidor de la lista
                 

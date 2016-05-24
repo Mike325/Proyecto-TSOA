@@ -4,10 +4,6 @@ import sistemaDistribuido.sistema.clienteServidor.modoMonitor.Nucleo;
 import sistemaDistribuido.sistema.clienteServidor.modoMonitor.ParMaquinaProceso;
 import sistemaDistribuido.util.Escribano;
 import sistemaDistribuido.util.Pausador;
-import sistemaDistribuido.visual.clienteServidor.PanelClienteServidor;
-import sistemaDistribuido.visual.clienteServidor.ProcesoFrame;
-import sistemaDistribuido.visual.clienteServidorRala.ClienteFrame;
-import sistemaDistribuido.visual.clienteServidorRala.ServidorFrame;
 import sistemaDistribuido.visual.util.PanelInformador;
 import sistemaDistribuido.visual.util.PanelIPID;
 import microKernelBasedSystem.util.WriterManager;
@@ -108,10 +104,10 @@ public class MicroNucleoFrame extends Frame implements WindowListener,Escribano,
 				levantarProcesoFrame(new sistemaDistribuido.visual.clienteServidorBuzones.ServidorFrame(MicroNucleoFrame.this));
 			}
 			else if (com.equals("Cliente Nombres")){
-				//levantarProcesoFrame(new ServidorFrame(MicroNucleoFrame.this));
+				levantarProcesoFrame(new sistemaDistribuido.visual.clienteServidorNombres.ClienteFrame(MicroNucleoFrame.this));
 			}
 			else if (com.equals("Servidor Nombres")){
-				//levantarProcesoFrame(new ServidorFrame(MicroNucleoFrame.this));
+				levantarProcesoFrame(new sistemaDistribuido.visual.clienteServidorNombres.ServidorFrame(MicroNucleoFrame.this));
 			}
                         
 		}

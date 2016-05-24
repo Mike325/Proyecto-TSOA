@@ -10,6 +10,7 @@ package sistemaDistribuido.sistema.clienteServidor.modoUsuarioRala;
 import sistemaDistribuido.sistema.clienteServidor.modoMonitor.Nucleo;
 import sistemaDistribuido.sistema.clienteServidor.modoUsuario.Proceso;
 import sistemaDistribuido.util.Escribano;
+import sistemaDistribuido.util.Pausador;
 
 /**
  * 
@@ -59,7 +60,7 @@ public class ProcesoCliente extends Proceso{
 		Nucleo.suspenderProceso();
 		byte[] solCliente=new byte[1024];
 		byte[] respCliente=new byte[1024];
-		String respuesta;
+		String respuesta, codigo_error = "0";
                 
 		solCliente[8]= (byte) codop; //es el dato que se va a enviar al servidor
 		solCliente[9]= (byte) msg.length(); //guarda en el arreglo el tamaño del mensaje
@@ -68,17 +69,20 @@ public class ProcesoCliente extends Proceso{
                 System.arraycopy(auxMensaje, 0, solCliente, 10, solCliente[9]);  //agrega el mensaje a la solicitud del cliente
                 
                 //String mensajePrueba = new String(solCliente, 10, solCliente[9]);
-                imprimeln("Señalamiento al nucleo para envio de mensaje");
-                Nucleo.send(248,solCliente);  //envia la solicitud al server
-                imprimeln("Invocando a receive()");
-		Nucleo.receive(dameID(),respCliente);  //recibe una respuesta del servidor
-		imprimeln("Procesando respuesta recibida del servidor");
-                procesarRespuesta(respCliente);
-                
+                do
+                {
+                    imprimeln("Señalamiento al nucleo para envio de mensaje");
+                    Nucleo.send(248,solCliente);  //envia la solicitud al server
+                    imprimeln("Invocando a receive()");
+                    Nucleo.receive(dameID(),respCliente);  //recibe una respuesta del servidor
+                    imprimeln("Procesando respuesta recibida del servidor");
+                    //procesarRespuesta(respCliente);
+                }while(procesarRespuesta(respCliente).equals("-1"));
 	}
         
-        public void procesarRespuesta(byte[] respuesta)
+        public String procesarRespuesta(byte[] respuesta)
         {
+            String codigo_error = "0";
             int operacion = respuesta[8];
             if(operacion==-33)
             {
@@ -87,7 +91,10 @@ public class ProcesoCliente extends Proceso{
             else
             {
                 //System.out.println("entra");
+                codigo_error = (new String(respuesta, 9, respuesta[8])).substring(0, 2);
                 imprimeln(new String(respuesta, 9, respuesta[8]));
             }
+            Pausador.pausa(5000);            
+            return codigo_error;
         }
 }

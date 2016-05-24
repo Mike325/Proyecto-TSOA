@@ -1,7 +1,7 @@
 //Gonzalo Daniel Sanchez De Luna
 //P5
 // D04
-package sistemaDistribuido.sistema.clienteServidor.modoUsuario;
+package sistemaDistribuido.sistema.clienteServidor.modoUsuarioNombres;
 import sistemaDistribuido.sistema.clienteServidor.modoMonitor.Nucleo;
 import sistemaDistribuido.sistema.clienteServidor.modoMonitor.ParMaquinaProceso;
 import sistemaDistribuido.sistema.clienteServidor.modoMonitor.atributos_asaSN;
@@ -37,7 +37,7 @@ public class ProcesoServidor<Emision> extends Proceso{
 	public void run(){
 		imprimeln("Proceso servidor en ejecucion.");
 		byte[] solServidor=new byte[1024];
-		byte[] respServidor= new byte[1024];
+		byte[] respServidor= new byte[1024], buzon;
 		String dato, mensaje = "";
 		int com;
 		int origen;
@@ -51,14 +51,26 @@ public class ProcesoServidor<Emision> extends Proceso{
 			e.printStackTrace();
 		}
 		id_serv=Nucleo.registrar_servidor(servidor,asa);
+                
+                Nucleo.registrarBuzon(dameID());
 		
 		while(continuar()){
 
-			Nucleo.receive(dameID(),solServidor);
+			buzon = Nucleo.revisaBuzon(dameID(), solServidor);
+                        if (buzon != null) 
+                        {
+                            imprimeln("Atendiendo solicitud del buzon");
+                            System.arraycopy(buzon, 0, solServidor, 0, buzon.length);
+                        }
+                        else
+                        {
+                            imprimeln("Invocando a recive");
+                            Nucleo.receive(dameID(),solServidor);
+                        }
 			//estoy asigandole el origen directamente
 			origen=solServidor[3];
 			imprimeln("Procesando solicitud recibida del cliente");
-			Pausador.pausa(1000);  //sin esta línea es posible que Servidor solicite send antes que Cliente solicite receive
+			Pausador.pausa(1000);  //sin esta lï¿½nea es posible que Servidor solicite send antes que Cliente solicite receive
 			com= (int) solServidor[9];
 			
 			// esto se lo puse porque al mandar llamar al metodo anterior se estaba borrando el origen y destino
@@ -96,7 +108,7 @@ public class ProcesoServidor<Emision> extends Proceso{
 			System.arraycopy(Cadena, 0, respServidor, 11, respServidor[10]);
 			imprimeln("Enviando respuesta");
 			Nucleo.send(origen,respServidor);
-
+                        Pausador.pausa(5000);
 		}
 		Nucleo.deregistro_servidor(id_serv);
 	}

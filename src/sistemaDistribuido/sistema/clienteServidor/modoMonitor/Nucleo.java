@@ -1,3 +1,6 @@
+//Gonzalo Daniel Sanchez De Luna
+//D04
+//P5
 package sistemaDistribuido.sistema.clienteServidor.modoMonitor;
 
 import sistemaDistribuido.sistema.clienteServidor.modoMonitor.ParMaquinaProceso;
@@ -73,13 +76,16 @@ public class Nucleo{
 	public static void iniciarSistema(Escribano wri, int puertoEntrada, int outputPort) {
 		nucleo.iniciarSistema(wri, puertoEntrada);
 	}
-
-	public static void registrar(ParMaquinaProceso asa) 
-	{
-	   //nucleo.registrar(asa); 
+	
+	public static int registrar_servidor(String nombre_servidor,ParMaquinaProceso asa){
+		return nucleo.registrar_servidor(nombre_servidor, asa);
 	}
-
-    // ************************************ BUZONES ***********************************
+	public static boolean deregistro_servidor(int id){
+		return nucleo.deregistrar_servidor(id);
+		
+	}
+        
+        // ************************************ BUZONES ***********************************
 	public static void registrarBuzon(int id)
 	{
 	    nucleo.registrarBuzon(id);

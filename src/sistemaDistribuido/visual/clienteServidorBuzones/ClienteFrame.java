@@ -21,7 +21,7 @@ public class ClienteFrame extends ProcesoFrame{
 	private String codop1,codop2,codop3,codop4;
 
 	public ClienteFrame(MicroNucleoFrame frameNucleo){
-		super(frameNucleo,"Cliente de Archivos");
+		super(frameNucleo,"Cliente de Archivos Buzones");
 		add("South",construirPanelSolicitud());
 		validate();
 		proc=new ProcesoCliente(this);

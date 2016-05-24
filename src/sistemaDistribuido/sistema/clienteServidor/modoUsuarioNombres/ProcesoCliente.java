@@ -1,11 +1,12 @@
 //Gonzalo Daniel Sanchez De Luna
 //P5
 // D04
-package sistemaDistribuido.sistema.clienteServidor.modoUsuario;
+package sistemaDistribuido.sistema.clienteServidor.modoUsuarioNombres;
 
 import sistemaDistribuido.sistema.clienteServidor.modoMonitor.Nucleo;
 import sistemaDistribuido.sistema.clienteServidor.modoUsuario.Proceso;
 import sistemaDistribuido.util.Escribano;
+import sistemaDistribuido.util.Pausador;
 
 /**
  * 
@@ -40,7 +41,7 @@ public class ProcesoCliente extends Proceso{
 		byte[] solCliente=new byte[1024];
 		byte[] respCliente=new byte[1024];
 		String respuesta_servidor;
-		String servidor="Esta bien dificil la practica";
+		String servidor="Esta bien dificil la practica", codigo_error = "0";
 		//com segun lo que se eligio en el choice
 		
 		if(com=="Crear")
@@ -56,22 +57,27 @@ public class ProcesoCliente extends Proceso{
 		
 		
 		solCliente= enviar_servidor(solCliente, datos_panel);
-		imprimeln("Señalando al nucleo para enviar mensaje");
+		imprimeln("SeÃ±alando al nucleo para enviar mensaje");
 		imprimeln("Enviando datos al servidor");
 
 		//	Nucleo.send(248,solCliente);
-		Nucleo.send(servidor, solCliente);
-		imprimeln("Invocando a receive()");
-		Nucleo.receive(dameID(),respCliente);
-		imprimeln("Recibiendo Datos");
-		
-		respuesta_servidor= respues_servidor(respCliente);
-		if(respCliente[8]==-100)
-			imprimeln("Destinatario no encontrado");
-		else{
-			respuesta_servidor=new String(respCliente,11,respCliente[10]);
-			imprimeln("El servidor respondio \n"+ respuesta_servidor);
-		}
+                do
+                {
+                    Nucleo.send(servidor, solCliente);
+                    imprimeln("Invocando a receive()");
+                    Nucleo.receive(dameID(),respCliente);
+                    imprimeln("Recibiendo Datos");
+
+                    respuesta_servidor= respues_servidor(respCliente);
+                    if(respCliente[8]==-100)
+                            imprimeln("Destinatario no encontrado");
+                    else{
+                            respuesta_servidor=new String(respCliente,11,respCliente[10]);
+                            codigo_error = respuesta_servidor.substring(0, 2);
+                            imprimeln("El servidor respondio \n"+ respuesta_servidor);
+                    }
+                    Pausador.pausa(5000);
+                }while(codigo_error.contains(":"));
 	}
 
 	

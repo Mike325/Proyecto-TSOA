@@ -201,11 +201,12 @@ public class ProcesoServidor extends Proceso
         byte[] respServidor;
         byte dato;
 
+        // practica 5 Buzones
         Nucleo.registrarBuzon(dameID());
 
         //Practica 5 Rala
         DatosServidor objServer= new DatosServidor();
-        objServer.setDestino(248);
+        objServer.setDestino(249);
         objServer.setId(nucleo.dameIdProceso()); 
         try 
         {
@@ -250,7 +251,7 @@ public class ProcesoServidor extends Proceso
             imprimeln("Generando mensaje a ser enviado, llenando los campos necesarios.");
 
             respServidor = empaquetarRespuesta(respServidor, solServidor);
-            Pausador.pausa(1000);  
+            //Pausador.pausa(1000);  
             imprimeln("enviando respuesta");
             System.out.println("Enviando desde " + id_destino + " a " + id_origen);
             Nucleo.send( id_origen, respServidor );

@@ -136,7 +136,7 @@ public class ProcesoCliente extends Proceso
             solCliente = empaquetarSolicitud(solCliente);
             do
             {
-                Nucleo.send(248 ,solCliente);
+                Nucleo.send(249 ,solCliente);
 
                 imprimeln("Invocando a recive");
                 Nucleo.receive(dameID(),respCliente);
